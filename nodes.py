@@ -364,6 +364,8 @@ class LoadAudio:
         return (audio,)
 
 class PreviewAudio:
+    def __init__(self):
+        self.preview_count = 00000
     @classmethod
     def INPUT_TYPES(s):
         return {"required":
@@ -375,7 +377,8 @@ class PreviewAudio:
     FUNCTION = "preview_audio"
     def preview_audio(self, audio):
         #保存文件
-        filename = "audio_out_"+''.join(random.sample("abcdefghijklmnopqrstupvxyz",5))+".wav"
+        filename = "audio_out_"+ f"{self.preview_count:05}"+".wav"
+        self.preview_count += 1
         audioname = os.path.join(folder_paths.get_output_directory(),filename)
         torchaudio.save(audioname,audio["waveform"].squeeze(0),audio["sample_rate"])
         #torchaudio.save(os.path.join(full_output_folder, file), waveform, audio["sample_rate"], format="FLAC")
